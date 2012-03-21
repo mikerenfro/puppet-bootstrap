@@ -2,7 +2,6 @@
 DEBIAN_RELEASE="squeeze"
 PUPPET_REPO="http://apt.puppetlabs.com/debian"
 PUPPET_PACKAGES="puppet"
-PUPPETMASTER="gold"
 APT_OPTIONS='-q -y'
 
 function add_puppet_repository()
@@ -54,6 +53,7 @@ function prompt_for_key_sign()
 }
 
 BASEDIR=`dirname $0`
+FQDN=`hostname --fqdn`
 
 cd ${BASEDIR}
 FUNCTION_LIST="
@@ -64,6 +64,12 @@ FUNCTION_LIST="
 	test_puppet_client
 	restart_puppet
 	"
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 fqdn.of.puppetmaster"
+else
+    PUPPETMASTER=$1
+fi
+
 for name in ${FUNCTION_LIST}; do
   echo === Running ${name}\(\) ===
   ${name}
