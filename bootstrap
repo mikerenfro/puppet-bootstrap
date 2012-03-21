@@ -1,0 +1,70 @@
+#!/bin/bash
+DEBIAN_RELEASE="squeeze"
+PUPPET_REPO="http://apt.puppetlabs.com/debian"
+PUPPET_PACKAGES="puppet"
+APT_OPTIONS='-q -y'
+
+function add_puppet_repository()
+{
+# Add puppet repository for later puppet releases
+    grep -q ${PUPPET_REPO} /etc/apt/sources.list || \
+	echo "deb ${PUPPET_REPO} ${DEBIAN_RELEASE} main" \
+	>> /etc/apt/sources.list
+    wget -O puppet_repo.gpg ${PUPPET_REPO}/pubkey.gpg
+    apt-key add puppet_repo.gpg
+    apt-get -q update > /dev/null
+}
+
+function install_puppet()
+{
+# Install puppet packages
+    apt-get ${APT_OPTIONS} --install-recommends install ${PUPPET_PACKAGES}
+}
+
+function configure_puppet()
+{
+# Create puppet.conf for clients
+    cp puppet.conf /etc/puppet/puppet.conf
+    perl -pi.bak \
+	-e "s/__PUPPETMASTER__/${PUPPETMASTER}/g" \
+	/etc/puppet/puppet.conf
+# Create /etc/default/puppet
+    cp puppet.default /etc/default/puppet
+}
+
+function restart_puppet()
+{
+# Restarting puppet
+    /etc/init.d/puppet stop
+    /etc/init.d/puppet start
+}
+
+function test_puppet_client()
+{
+    puppetd -vt
+}
+
+function prompt_for_key_sign()
+{
+    echo "Sign the key for ${FQDN} on the puppetmaster (${PUPPETMASTER}) now"
+    echo "using puppetca --sign ${FQDN}"
+    echo "Press Enter when that's done."
+    read junk
+}
+
+BASEDIR=`dirname $0`
+
+cd ${BASEDIR}
+FUNCTION_LIST="
+	add_puppet_repository
+	install_puppet configure_puppet
+	test_puppet_client
+	prompt_for_key_sign
+	test_puppet_client
+	restart_puppet
+	"
+for name in ${FUNCTION_LIST}; do
+  echo === Running ${name}\(\) ===
+  ${name}
+  echo
+done
