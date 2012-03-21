@@ -2,6 +2,7 @@
 DEBIAN_RELEASE="squeeze"
 PUPPET_REPO="http://apt.puppetlabs.com/debian"
 PUPPET_PACKAGES="puppet"
+PUPPETMASTER="gold"
 APT_OPTIONS='-q -y'
 
 function add_puppet_repository()
