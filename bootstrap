@@ -1,8 +1,23 @@
 #!/bin/bash
 DEBIAN_RELEASE="squeeze"
 PUPPET_REPO="http://apt.puppetlabs.com/debian"
+DEBIAN_REPO="http://http.us.debian.org/debian"
 PUPPET_PACKAGES="puppet"
 APT_OPTIONS='-q -y'
+
+function remove_cdrom_repositories()
+{
+    cp /etc/apt/sources.list /etc/apt/sources.list.$$
+    sed 's/deb cdrom/# deb cdrom/g' /etc/apt/sources.list.$$ > /etc/apt/sources.list
+    rm /etc/apt/sources.list.$$
+}
+
+function add_http_repository()
+{
+    grep -q "^deb ${DEBIAN_REPO} ${DEBIAN_RELEASE} main" /etc/apt/sources.list || \
+	echo "deb ${DEBIAN_REPO} ${DEBIAN_RELEASE} main" \
+	>> /etc/apt/sources.list
+}
 
 function add_puppet_repository()
 {
