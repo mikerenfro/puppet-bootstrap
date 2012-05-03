@@ -12,7 +12,7 @@ function remove_cdrom_repositories()
     rm /etc/apt/sources.list.$$
 }
 
-function add_http_repository()
+function add_network_mirror()
 {
     grep -q "^deb ${DEBIAN_REPO} ${DEBIAN_RELEASE} main" /etc/apt/sources.list || \
 	echo "deb ${DEBIAN_REPO} ${DEBIAN_RELEASE} main" \
@@ -72,6 +72,8 @@ FQDN=`hostname --fqdn`
 
 cd ${BASEDIR}
 FUNCTION_LIST="
+        remove_cdrom_repository
+        add_network_mirror
 	add_puppet_repository
 	install_puppet configure_puppet
 	test_puppet_client
