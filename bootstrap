@@ -72,7 +72,7 @@ FQDN=`hostname --fqdn`
 
 cd ${BASEDIR}
 FUNCTION_LIST="
-        remove_cdrom_repository
+        remove_cdrom_repositories
         add_network_mirror
 	add_puppet_repository
 	install_puppet configure_puppet
