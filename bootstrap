@@ -1,6 +1,6 @@
 #!/bin/bash
 DEBIAN_RELEASE="squeeze"
-PUPPET_REPO="http://apt.puppetlabs.com/debian"
+PUPPET_REPO="http://apt.puppetlabs.com"
 DEBIAN_REPO="http://http.us.debian.org/debian"
 PUPPET_PACKAGES="puppet"
 APT_OPTIONS='-q -y'
@@ -56,13 +56,13 @@ function restart_puppet()
 
 function test_puppet_client()
 {
-    puppetd -vt
+    puppet agent -vt
 }
 
 function prompt_for_key_sign()
 {
     echo "Sign the key for ${FQDN} on the puppetmaster (${PUPPETMASTER}) now"
-    echo "using puppetca --sign ${FQDN}"
+    echo "using puppet ca --sign ${FQDN}"
     echo "Press Enter when that's done."
     read junk
 }
@@ -72,8 +72,8 @@ FQDN=`hostname --fqdn`
 
 cd ${BASEDIR}
 FUNCTION_LIST="
-        remove_cdrom_repositories
-        add_network_mirror
+    remove_cdrom_repositories
+    add_network_mirror
 	add_puppet_repository
 	install_puppet configure_puppet
 	test_puppet_client
