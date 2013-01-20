@@ -62,7 +62,7 @@ function test_puppet_client()
 function prompt_for_key_sign()
 {
     echo "Sign the key for ${FQDN} on the puppetmaster (${PUPPETMASTER}) now"
-    echo "using puppet ca --sign ${FQDN}"
+    echo "using puppet ca sign ${FQDN}"
     echo "Press Enter when that's done."
     read junk
 }
