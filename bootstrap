@@ -1,5 +1,5 @@
 #!/bin/bash
-DEBIAN_RELEASE="squeeze"
+DEBIAN_RELEASE="wheezy"
 PUPPET_REPO="http://apt.puppetlabs.com"
 DEBIAN_REPO="http://http.us.debian.org/debian"
 PUPPET_PACKAGES="puppet"
@@ -56,7 +56,7 @@ function restart_puppet()
 
 function test_puppet_client()
 {
-    puppet agent -vt
+    puppet agent -t
 }
 
 function prompt_for_key_sign()
