@@ -85,6 +85,7 @@ FUNCTION_LIST="
 	"
 if [ $# -ne 1 ]; then
     echo "Usage: $0 fqdn.of.puppetmaster"
+    exit 1
 else
     PUPPETMASTER=$1
 fi
