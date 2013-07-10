@@ -27,8 +27,8 @@ function add_puppet_repository()
     # >> /etc/apt/sources.list
     #     wget -O puppet_repo.gpg ${PUPPET_REPO}/pubkey.gpg
     #     apt-key add puppet_repo.gpg
-    wget http://apt.puppetlabs.com/puppetlabs-release-wheezy.deb
-    dpkg -i puppetlabs-release-wheezy.deb
+    wget http://apt.puppetlabs.com/puppetlabs-release-${DEBIAN_RELEASE}.deb
+    dpkg -i puppetlabs-release-${DEBIAN_RELEASE}.deb
     apt-get -q update > /dev/null
 }
 
